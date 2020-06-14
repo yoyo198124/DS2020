@@ -23,17 +23,17 @@ from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
 
 def load_data(database_filepath):
-"""
-Load data from database
-:param database_filepath:database file path
-:type database_filepath:string
-:return X:messages dataframe
-:rtype X:pd.dataframe
-:return y:category dataframe
-:rtype y:pd.dataframe
-:return category_name:list of category names
-:rtype category_name:list
-"""
+    """
+    Load data from database
+    :param database_filepath:database file path
+    :type database_filepath:string
+    :return X:messages dataframe
+    :rtype X:pd.dataframe
+    :return y:category dataframe
+    :rtype y:pd.dataframe
+    :return category_name:list of category names
+    :rtype category_name:list
+    """
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql("SELECT * FROM messages", engine)
     X =  df.message
@@ -42,13 +42,13 @@ Load data from database
     return X,y,category_names
 
 def tokenize(text):
-"""
-Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
-:param text:the text for tokenize   
-:type text:string
-:return: a list contain tokenzied words
-:rtype:list
-"""
+    """
+    Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
+    :param text:the text for tokenize   
+    :type text:string
+    :return: a list contain tokenzied words
+    :rtype:list
+    """
     #1 Normalize text
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
     #2 Tokenize text
@@ -62,10 +62,10 @@ Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
 
 
 def build_model():
-"""
-Build model
-:return:MultiOutputClassifierr(RandomForestClassifier()) model
-"""
+    """
+    Build model
+    :return:MultiOutputClassifierr(RandomForestClassifier()) model
+    """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -81,29 +81,29 @@ Build model
     return model
 
 def evaluate_model(model, X_test, Y_test, category_names):
-"""
-Evaluate model
-:param model:model for evaluate
-:type model: model
-:param X_test:test input dataframe
-:type X_test:pd.dataframe
-:param Y_test:test output dataframe
-:type Y_test:pd.dataframe
-:param category_names:list of category names
-:type category_names:list
-"""
+    """
+    Evaluate model
+    :param model:model for evaluate
+    :type model: model
+    :param X_test:test input dataframe
+    :type X_test:pd.dataframe
+    :param Y_test:test output dataframe
+    :type Y_test:pd.dataframe
+    :param category_names:list of category names
+    :type category_names:list
+    """
     y_pred = model.predict(X_test)
     print(classification_report(Y_test, y_pred, target_names=category_names))
 
 
 def save_model(model, model_filepath):
-"""
-Save model to pkl file
-:param model:model for save
-:type model:model
-:param model_filepath:model file path
-:type model_filepath:string 
-"""
+    """
+    Save model to pkl file
+    :param model:model for save
+    :type model:model
+    :param model_filepath:model file path
+    :type model_filepath:string 
+    """
     output = open(model_filepath, 'wb')
     s = pickle.dump(model, output)
     output.close()
