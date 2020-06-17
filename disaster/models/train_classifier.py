@@ -23,16 +23,13 @@ from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
 
 def load_data(database_filepath):
-    """
-    Load data from database
-    :param database_filepath:database file path
-    :type database_filepath:string
-    :return X:messages dataframe
-    :rtype X:pd.dataframe
-    :return y:category dataframe
-    :rtype y:pd.dataframe
-    :return category_name:list of category names
-    :rtype category_name:list
+    """ Load data from database
+    Args:
+	database_filepath(String):database file path
+    Returns:
+	X(Pandas dataframe):messages dataframe
+        y(Pandas dataframe):category dataframe
+        category_name(List):list of category names
     """
     engine = create_engine('sqlite:///'+database_filepath)
     df = pd.read_sql("SELECT * FROM messages", engine)
@@ -42,12 +39,11 @@ def load_data(database_filepath):
     return X,y,category_names
 
 def tokenize(text):
-    """
-    Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
-    :param text:the text for tokenize   
-    :type text:string
-    :return: a list contain tokenzied words
-    :rtype:list
+    """Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
+    Args:
+	text(String):the text for tokenize   
+    returns:
+	stemmed(List): a list contain tokenzied words
     """
     #1 Normalize text
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
@@ -62,9 +58,8 @@ def tokenize(text):
 
 
 def build_model():
-    """
-    Build model
-    :return:MultiOutputClassifierr(RandomForestClassifier()) model
+    """Build model
+    Args:return:MultiOutputClassifierr(RandomForestClassifier()) model
     """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),

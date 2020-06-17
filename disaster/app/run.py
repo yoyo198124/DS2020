@@ -15,12 +15,11 @@ from  plotly.graph_objs import Pie,Bar
 app = Flask(__name__)
 
 def tokenize(text):
-    """
-    Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
-    :param text:the text for tokenize   
-    :type text:string
-    :return: a list contain tokenzied words
-    :rtype:list
+    """Tokenzie text to words with word_tolenzie,lower,strip,WordNetLemmatizer
+    Args:
+	text(String):the text for tokenize   
+    Returns: 
+	a list contain tokenzied words
     """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
@@ -43,8 +42,10 @@ def return_figures(categories_names,categories_counts,genre_names,genre_counts):
     """Creates  plotly visualizations
 
     Args:
-        None
-
+        categories_names(List):categories names list
+	categories_counts(Numpy Series):categories counts by categories name 
+	genre_names(List):genre names list
+	genre_counts(Numpy Series):genre counts by genre name
     Returns:
         list (dict): list containing the four plotly visualizations
 
@@ -77,7 +78,7 @@ def return_figures(categories_names,categories_counts,genre_names,genre_counts):
                 yaxis = dict(title = 'Count'),
                 )    
     
-    raph_three = []    
+    graph_three = []    
     graph_three.append(
       Pie(
           labels = categories_names,
@@ -99,10 +100,9 @@ def return_figures(categories_names,categories_counts,genre_names,genre_counts):
 @app.route('/')
 @app.route('/index')
 def index():
-    """
-    Extract data needed for visuals
-    :return:render_template
-    :rtype:render_template render web page with plotly graphs
+    """Extract data needed for visuals
+    Returns:
+	render_template:render web page with plotly graphs
     """
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
@@ -124,10 +124,9 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
-    """
-    save user input in query
-    :return:render_template
-    :rtype:render_template render web page with plotly graphs
+    """save user input in query
+    Returns:
+	render_template:render web page with plotly graphs
     """
     # save user input in query
     query = request.args.get('query', '') 

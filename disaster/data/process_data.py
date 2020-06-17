@@ -4,14 +4,12 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-    """
-    Load data from messages and categories and merge them
-    :param messages_filepath:the path of massages file
-    :param categories_filepath:the path of categories file
-    :type messages_filepath:string
-    :type categories_filepath:string
-    :return:df of meaasges merge categories
-    :rtype:pd.dataframe
+    """Load data from messages and categories and merge them
+    Args:
+    	messages_filepath(String):the path of massages file
+        categories_filepath(Strig):the path of categories file
+    Returns:
+	df(Pandas dataframe):dataframe of meaasges merge categories
     """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
@@ -19,12 +17,11 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
-    """
-    Clean the datafrom remove "-" and build new categores columns 
-    :param df:dateframe for clean
-    :type df:pd.dataframe
-    :return:cleaned dataframe
-    :rtype:pd.dataframe
+    """Clean the datafrom remove "-" and build new categores columns 
+    Args:
+	 df(Pandas Dataframe):dateframe for clean
+    Returns:
+	 df(Pandas Dataframe):cleaned dataframe
     """
     categories = df.categories.str.split(';',expand=True)
     row = categories.loc[0]
@@ -43,12 +40,10 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    """
-    Save data to database
-    :param df:dateframe for save
-    :type df:pd.dateframe
-    :param database_filename:database file
-    :type database_filename:string
+    """Save data to database
+    Args:
+	df(Pandas dataframe):dataframe for save
+        database_filename(String):database file
     """
     engine = create_engine('sqlite:///'+database_filename)
     df.to_sql('messages', engine, index=False)  
